@@ -28,14 +28,25 @@ module.exports = function() {
 		mom_email: {
 			type: String,
 			required: true
-		},
-		va_id: {
-			type: String,
-			required: true
-		},
-		va_email: {
-			type: String,
-			required: true
 		}
 	});
-}
+
+	this.schema.statics.toEntity = function(rawModel) {
+		return {
+			'job_id': rawModel.job_id,
+			'job_name': rawModel.job_name,
+			'job_description': rawModel.job_description,
+			'job_price': rawModel.job_price,
+			'mom_id': rawModel.mom_id,
+			'mom_email': rawModel.mom_email
+		};
+	};
+
+	this.schema.index({
+		mom_email: 1
+	});
+	
+	this.schema.set('autoIndex', false);
+
+	return this;
+};
