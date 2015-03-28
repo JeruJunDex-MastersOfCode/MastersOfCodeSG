@@ -43,10 +43,10 @@ module.exports = function () {
 
 	this.schema.statics.toEntity = function(rawModel) {
 		return {
-			'uid': rawModel._id,
-			'ufirstName': rawModel.ufirstName,
-			'umiddleName': rawModel.umiddleName,
-			'ulastName': rawModel.ulastName,
+			'uId': rawModel._id,
+			'uFirstName': rawModel.uFirstName,
+			'uMiddleName': rawModel.uMiddleName,
+			'uLastName': rawModel.uLastName,
 			'uEmail': rawModel.uEmail,
 			'uAddress': rawModel.uAddress,
 			'uContactNo': rawModel.uContactNo,

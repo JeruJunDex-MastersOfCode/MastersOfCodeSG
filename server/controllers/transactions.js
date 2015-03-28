@@ -1,12 +1,11 @@
 var models = require('../models/index');
 var config = require('../config');
-var querystring = require('querystring');
 var async = require('async');
 var mongoose = require('mongoose');
-var __ = require('underscore');
-var Q = require('q');
-// var SimplifyCommerce = require('../public/js/lib/simplify');
-
+var parser = require('xml2json');
+var request = require('request');
+var http = require('http');
+var fs = require('fs');
 
 exports.index = function(req, res) {
 	res.send({
@@ -14,50 +13,140 @@ exports.index = function(req, res) {
 	});
 };
 
-exports.testRoute = function(req, res) {
-	/*var referenceID;
-	require('crypto').randomBytes(48, function(ex, buf) {
-        referenceID = buf.toString('hex');
-    });*/
-
-	/*SimplifyCommerce.generateToken({
-		key: 'sbpb_YWRjMDA1ZDMtMzQzYS00MWViLThiMzctN2EwYjM0ZmMyZDY3',
-		card: {
-			number: 5555555555554444,
-			cvc: 123,
-
-
-		}
-	})*/
-var Simplify = require('simplify-commerce'),
-	client = Simplify.getClient({
-		publicKey: config.simplifyCommerce.public_key,
-		privateKey: config.simplifyCommerce.private_key
-	});
-
-	client.payment.create({
-	    amount : "1000",
-	    token : "f21da65e-f0ab-45cb-b8e6-40b493c3671f",
-	    description : "payment description",
-	    currency : "USD"
-	}, function(errData, data){
-	    if(errData){
-	        console.error("Error Message: " + errData.data.error.message);
-	        // handle the error
-	        // return;
-	    }
-	    console.log("Payment Status: " + data.paymentStatus);
-	    res.send(data);
-	});
-}
-
 exports.startTransaction = function(req, res) {
 
 };
 
 exports.checkout = function(req, res) {
+	function simplifyPayment(callback) {
+		var Simplify = require("simplify-commerce"),
+		    client = Simplify.getClient({
+		        publicKey: config.simplifyCommerce.public_key,
+		        privateKey: config.simplifyCommerce.private_key
+		    });
 
+		var userModel = models.userModel,
+			taskModel = models.taskModel,
+			transactionModel = models.transactionModel;
+
+		userModel.findOne({uEmail: req.body.uEmail}, function(err, user) {
+			if(!err) {
+				if(user) {
+					console.log('User >> ' + user);
+					taskModel.find({})
+						.where('taskOwner').equals(user.uId)
+						.exec(function(err, task) {
+							console.log('Task >> ' + task);
+							transactionModel.findOne({taskId: task.taskId}, function(err, transaction) {
+								var totalAmount = task.taskRate - (task.taskRate * transaction.transFixedRate);
+								console.log('Total Amount >> ' + totalAmount);
+
+								client.payment.create({
+									customer: user.u_MCustomerId,
+									amount : totalAmount,
+									currency : "USD"
+								}, function(errData, data) {
+									if(errData) {
+										console.error(errData.data.error.message);
+										return;
+									}
+									console.log(data);
+									callback(data);
+								});
+							});
+					});
+				}
+			}
+		});
+	}
+
+	function moneySend(callback) {
+		var xmlTemplate = require('request.xml');
+
+		var chars =  {
+		    '<': '&lt;',
+		    '>': '&gt;',
+		    '(': '&#40;',
+		    ')': '&#41;',
+		    '#': '&#35;',
+		    '&': '&amp;',
+		    '"': '&quot;',
+		    "'": '&apos;'
+		};
+
+		var options = {
+		    object: false,
+		    reversible: true,
+		    coerce: true,
+		    sanitize: true,
+		    trim: true,
+		    arrayNotation: false
+		};
+	}
 };
+
+exports.test = function(req, res) {
+	/*var chars =  {
+	    '<': '&lt;',
+	    '>': '&gt;',
+	    '(': '&#40;',
+	    ')': '&#41;',
+	    '#': '&#35;',
+	    '&': '&amp;',
+	    '"': '&quot;',
+	    "'": '&apos;'
+	};
+
+	var options = {
+	    object: false,
+	    reversible: true,
+	    coerce: true,
+	    sanitize: true,
+	    trim: true,
+	    arrayNotation: false
+	};
+
+	var xmlFile = 'request.xml';
+
+	var jsonObj = parser.toJson(xmlFile);
+	console.log(jsonObj);
+	res.send(jsonObj);*/
+
+	/*var returnJSONResults = function(baseName, queryName) {
+		var XMLPath = "request.xml";
+		var rawJSON = loadXMLDoc(XMLPath);
+		function loadXMLDoc(filePath) {
+		var fs = require('fs');
+		var xml2js = require('xml2js');
+		var json;
+		try {
+		    var fileData = fs.readFileSync(filePath, 'ascii');
+
+		    var parser = new xml2js.Parser();
+		    parser.parseString(fileData.substring(0, fileData.length), function (err, result) {
+		    json = JSON.stringify(result);
+		    console.log(result);
+		});
+
+		console.log("File '" + filePath + "/ was successfully read.\n");
+		return json;
+		} catch (ex) {console.log(ex)}
+		}
+		}();*/
+	var xmlPath = "request2.xml";
+
+	request({
+		url: 'http://dmartin.org:8028/moneysend/v2/transfer?Format=XML',
+		method: 'post',
+		headers: {
+			'Content-Type': 'application/xml'
+		},
+		body: xmlPath
+	}, function(error, response, body) {
+		console.log(response);
+		res.send(body);
+	});
+}
 
 exports.endTransaction = function(req, res) {
 
