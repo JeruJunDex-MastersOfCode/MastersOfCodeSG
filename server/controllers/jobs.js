@@ -54,16 +54,30 @@ exports.getJob = function(req, res) {
 
 exports.addJob = function(req, res) {
 	var jobModel =  models.jobModel;
-	var userModel = models.userModel;
 
 	var mom_id = req.params.mom_id;
 
 	var tempJob = {};
 
+	if(req.body.job_name == null || req.body.job_name == undefined) {
+		res.send({
+			'error': 'Job name is required!'
+		});
+		return;
+	}
+
+	if(req.body.job_price == null || req.body.job_price == undefined) {
+		res.send({
+			'error': 'Job name is required!'
+		});
+		return;
+	}	
+
 	tempJob.job_name = req.body.job_name;
 	tempJob.job_description = req.body.job_description;
 	tempJob.job_price = req.body.job_price;
 	tempJob.job_priority = req.body.job_priority;
+	tempJob.mom_id = mom_body.mom_id;
 
 	jobModel.find({}, function(err, jobs) {
 		if(!err) {
@@ -92,6 +106,39 @@ exports.addJob = function(req, res) {
 };
 
 exports.editJob = function(req, res){
+	var jobModel = models.jobModel;
+
+	var job_id = req.params.job_id;
+
+	jobModel.findOne({job_id: job_id}, function(err, job) {
+		if(!err) {
+			if(job) {
+				var tempJob = {};
+				tempJob.job_name = req.body.job_name;
+				tempJob.job_description = req.body.job_description;
+				tempJob.job_price = req.body.job_price;
+				tempJob.job_priority = req.body.job_priority;
+				tempJob.mom_id = mom_body.mom_id;
+				job.save(function(err) {
+					if(err) {
+						var entity = jobModel.toEntity(tempJob);
+						res.send(entity);
+					} else {
+						res.send({
+							'Error': err
+						});
+					}
+				});
+			} else {
+				res.send({});
+			}
+		} else {
+			console.log(err);
+			res.send({
+				'Error': err
+			});
+		}
+	});
 
 };
 

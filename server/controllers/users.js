@@ -64,37 +64,38 @@ exports.signup = function(req,res) {
 		});
 		return;
 	}*/
+	/*TODO: session check*/
 
-	userModel.findOne(function (err, user) {
+	userModel.find({},function (err, user) {
 		if (!err) {
 			if (user) {
-				res.send({
-					'error': 'User already exists in the database.'
-				});
-			} else {
-				var user = new userModel({					
-					user_firstName: req.body.user_firstName,
-					user_lastName: req.body.user_lastName,
-					user_address: req.body.user_address,
-					user_contactNo: req.body.user_contactNo,
-					user_email: req.body.user_email,
-					user_city: req.body.user_city,
-					user_photo: req.body.user_photo,
-					user_type: req.body.user_type,
-					user_middleName: req.body.user_middleName
-				});
+					var user = new userModel({					
+						user_firstName: req.body.user_firstName,
+						user_lastName: req.body.user_lastName,
+						user_address: req.body.user_address,
+						user_contactNo: req.body.user_contactNo,
+						user_email: req.body.user_email,
+						user_city: req.body.user_city,
+						user_photo: req.body.user_photo,
+						user_type: req.body.user_type,
+						user_middleName: req.body.user_middleName
+					});
 
-				user.save(function (err) {
-					if (!err) {
-						var entity = userModel.toEntity(user);
-						res.send(entity);
-					} else {
-						console.log(err);
-						res.send({
-							'error': err
-						});
-					}
-				});
+					user.save(function (err) {
+						if (!err) {
+							var entity = userModel.toEntity(user);
+							res.send(entity);
+						} else {
+							console.log(err);
+							res.send({
+								'error': err
+							});
+						}
+					});
+			} else {
+				res.send({
+					'error': 'User already exists!'
+				})
 			}
 		} else {
 			console.log(err);

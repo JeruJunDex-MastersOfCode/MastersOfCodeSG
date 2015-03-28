@@ -10,40 +10,31 @@ module.exports = function() {
 			type: String	
 		},
 		transaction_name: {
-			type: String,
-			required: true
+			type: String
 		},
 		transaction_description: {
-			type: String,
-			required: true
+			type: String
 		},
 		transaction_price: {
-			type: String,
-			required: true
+			type: String
 		},
 		transaction_priority: {
-			type: String,
-			required: true
+			type: String
 		},
 		transaction_status: {
-			type: String,
-			required: true
+			type: String
 		},
 		mom_id: {
-			type: String,
-			required: true
+			type: String
 		},
 		mom_email: {
-			type: String,
-			required: true
+			type: String
 		},
 		va_id: {
-			type: String,
-			required: true
+			type: String
 		},
 		va_email: {
-			type: String,
-			required: true
+			type: String
 		}
 	});
 
@@ -56,9 +47,7 @@ module.exports = function() {
 			'transaction_priority': rawModel.transaction_priority,
 			'transaction_status': rawModel.transaction_status,
 			'mom_id': rawModel.mom_id,
-			'mom_email': rawModel.mom_email,
-			'va_id': rawModel.va_id,
-			'va_eamil': rawModel.va_eamil
+			'va_id': rawModel.va_id
 		};
 	};
 

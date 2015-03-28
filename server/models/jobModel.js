@@ -10,28 +10,26 @@ module.exports = function() {
 			type: String	
 		},
 		job_name: {
-			type: String,
-			required: true
+			type: String
 		},
 		job_description: {
-			type: String,
-			required: true
+			type: String
 		},
 		Job_priority: {
-			type: String,
-			required: true
+			type: String
 		},
 		job_price: {
-			type: String,
-			required: true
+			type: String
 		},
 		mom_id: {
-			type: String,
-			required: true
+			type: String
 		},
-		mom_email: {
-			type: String,
-			required: true
+		status: {
+			type: String
+		},
+		archived: {
+			type: Boolean,
+			default: false
 		}
 	});
 
@@ -43,7 +41,7 @@ module.exports = function() {
 			'job_priority': rawModel.job_priority,
 			'job_price': rawModel.job_price,
 			'mom_id': rawModel.mom_id,
-			'mom_email': rawModel.mom_email
+			'archived': rawModel.archived
 		};
 	};
 
