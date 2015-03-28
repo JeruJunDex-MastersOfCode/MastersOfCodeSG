@@ -3,8 +3,18 @@
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="task in tasks">
-        <h2>{{ task.title }}</h2>
-        <p>{{ task.description }}</p>
+        <div class="card card-list">
+		  <div class="item item-text-wrap">
+		   	<h2 class="positive">{{ task.title }}</h2>
+		   	<p>{{ task.description }}</p>
+		   	<div class="item-bottom">
+		   		<span><strong>P800.00</strong></span>
+		   		<button class="button button-positive item-edit">
+  					EDIT
+				</button>
+		   	</div>
+		  </div>
+		</div>
       </ion-item>
     </ion-list>
   </ion-content>
