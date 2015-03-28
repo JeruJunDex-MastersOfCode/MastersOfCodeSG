@@ -5,7 +5,7 @@ module.exports = {
 	},
 	simplifyCommerce: {
 		public_key: 'sbpb_ZmRlMTc4NGItYTNkMC00Zjk3LWI5YWEtYjNlZDgxMzVkOTMx',
-		private_secret: 'u3Vn1hljQBY8gl5Tf0mXalbXo++SFHvQbPR5SAZoK6N5YFFQL0ODSXAOkNtXTToq'
+		private_key: 'u3Vn1hljQBY8gl5Tf0mXalbXo++SFHvQbPR5SAZoK6N5YFFQL0ODSXAOkNtXTToq'
 	},	
 	moneySend: {
 

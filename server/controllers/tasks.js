@@ -13,13 +13,13 @@ exports.index = function(req, res) {
 };
 
 exports.getJobs = function(req, res) {
-	var jobModel = models.jobModel;
+	var taskModel = models.taskModel;
 
-	jobModel.find({}, function(err, jobs) {
+	taskModel.find({}, function(err, jobs) {
 		if(!err) {
 			var entities = [];
 			for(var i in jobs) {
-				var entity =  jobModel.toEntity(jobs[i]);
+				var entity =  taskModel.toEntity(jobs[i]);
 				entities.push(entity);
 			}
 			res.send(entities)
@@ -33,12 +33,12 @@ exports.getJobs = function(req, res) {
 };
 
 exports.getJob = function(req, res) {
-	var jobModel = models.jobModel;
+	var taskModel = models.taskModel;
 
-	jobModel.findOne({job_id: req.body.job_id}, function(err, job) {
+	taskModel.findOne({job_id: req.body.job_id}, function(err, job) {
 		if(!err) {
 			if(job) {
-				var entity = jobModel.toEntity(job);
+				var entity = taskModel.toEntity(job);
 				res.send(entity);
 			} else {
 				res.send({});
@@ -53,7 +53,7 @@ exports.getJob = function(req, res) {
 };
 
 exports.addJob = function(req, res) {
-	var jobModel =  models.jobModel;
+	var taskModel =  models.taskModel;
 
 	var mom_id = req.params.mom_id;
 
@@ -79,12 +79,12 @@ exports.addJob = function(req, res) {
 	tempJob.job_priority = req.body.job_priority;
 	tempJob.mom_id = mom_body.mom_id;
 
-	jobModel.find({}, function(err, jobs) {
+	taskModel.find({}, function(err, jobs) {
 		if(!err) {
 			if(jobs) {
 				jobs.save(function(err) {
 					if(!err) {
-						var entity = jobModel.toEntity(tempJob);
+						var entity = taskModel.toEntity(tempJob);
 						res.send(entity);
 					} else {
 						res.send({
@@ -106,11 +106,11 @@ exports.addJob = function(req, res) {
 };
 
 exports.editJob = function(req, res){
-	var jobModel = models.jobModel;
+	var taskModel = models.taskModel;
 
 	var job_id = req.params.job_id;
 
-	jobModel.findOne({job_id: job_id}, function(err, job) {
+	taskModel.findOne({job_id: job_id}, function(err, job) {
 		if(!err) {
 			if(job) {
 				var tempJob = {};
@@ -121,7 +121,7 @@ exports.editJob = function(req, res){
 				tempJob.mom_id = mom_body.mom_id;
 				job.save(function(err) {
 					if(err) {
-						var entity = jobModel.toEntity(tempJob);
+						var entity = taskModel.toEntity(tempJob);
 						res.send(entity);
 					} else {
 						res.send({
@@ -142,6 +142,6 @@ exports.editJob = function(req, res){
 
 };
 
-exports.archiveJob = function(req, res) {
+exports.updateStatus = function(req, res) {
 
 };

@@ -6,9 +6,62 @@ var mongoose = require('mongoose');
 var __ = require('underscore');
 var Q = require('q');
 
+var Simplify = require("simplify-commerce"),
+    client = Simplify.getClient({
+        publicKey: config.simplifyCommerce.public_key,
+        privateKey: config.simplifyCommerce.private_key
+    });
+
+var tempObj = {};
+
 exports.index = function(req, res) {
 	res.send({
 		message: 'Invalid url!'
+	});
+};
+
+exports.testRoute = function(req, res) {
+
+	client.customer.create({
+	    email : "customer@mastercard.com",
+	    name : "Customer TEST",
+	    card : {
+	       expMonth : "11",
+	       expYear : "19",
+	       cvc : "123",
+	       number : "5555555555554444"
+	    }
+	}, function(errData, data){
+	 
+	    if(errData){
+	        console.error("Error Message: " + errData.data.error.message);
+	        // handle the error
+	        return;
+	    }
+	 
+	    console.log("Success Response: " + JSON.stringify(data));
+	    tempObj.customerId = data.card.customer.id;
+	    tempObj.cardExpMonth = data.card.expMonth;
+	    tempObj.expYear = data.card.expYear;
+	    tempObj.cardNumber = data.card.number;
+	    console.log('Customer id > ' + tempObj.customerId);
+	    res.send(data);
+	});
+};
+
+exports.testPayment = function(req, res) {
+	console.log(tempObj);
+	client.payment.create({
+		customer: tempObj.customerId,
+		amount : "2500",
+		currency : "USD"
+	}, function(errData, data) {
+		if(errData) {
+			console.error(errData.data.error.message);
+			return;
+		}
+		console.log(data);
+		res.send(data);
 	});
 };
 
