@@ -1,6 +1,5 @@
 var models = require('../models/index');
 var config = require('../config');
-var request = require('request');
 var querystring = require('querystring');
 var async = require('async');
 var mongoose = require('mongoose');
@@ -14,7 +13,7 @@ exports.index = function(req, res) {
 };
 
 exports.getAllUsers = function(req,res) {
-	var models = models.userModel;
+	var userModel = models.userModel;
 
 	userModel.find({}, function(err, users) {
 		if(!err){
@@ -38,7 +37,52 @@ exports.getUser = function(req, res) {
 };
 
 exports.signup = function(req,res) {
+	var userModel = models.userModel;
 
+	/*if (!req.body.user_firstname || !req.body.user_lastname || !req.body.user_address || !req.body.user_contactNo || !req.body.user_email || !req.body.user_city) {
+		res.send({
+			'error': "One or more required fields are missing"
+		});
+		return;
+	}*/
+
+	userModel.findOne(function (err, user) {
+		if (!err) {
+			if (user) {
+				res.send({
+					'error': 'User already exists in the database.'
+				});
+			} else {
+				var user = new userModel({
+					user_email: req.body.user_email,
+					user_firstname: req.body.user_firstname,
+					user_lastname: req.body.user_lastname,
+					user_address: req.body.user_address,
+					user_contactNo: req.body.user_contactNo,
+					user_city: req.body.user_city,
+					user_photo: req.body.user_photo,
+					user_type: req.body.user_type
+				});
+
+				user.save(function (err) {
+					if (!err) {
+						var entity = userModel.toEntity(user);
+						res.send(entity);
+					} else {
+						console.log(err);
+						res.send({
+							'error': err
+						});
+					}
+				});
+			}
+		} else {
+			console.log(err);
+			res.send({
+				'error': err
+			});
+		}
+	});
 };
 
 exports.login = function(req, res) {
