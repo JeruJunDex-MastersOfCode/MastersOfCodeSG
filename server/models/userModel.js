@@ -45,7 +45,7 @@ module.exports = function () {
 
 	this.schema.statics.toEntity = function(rawModel) {
 		return {
-			'user_id': rawModel.user_id,
+			'user_id': rawModel._id,
 			'user_firstName': rawModel.user_firstName,
 			'user_lastName': rawModel.user_lastName,
 			'user_address': rawModel.user_address,

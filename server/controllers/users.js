@@ -9,7 +9,7 @@ var Q = require('q');
 
 exports.index = function(req, res) {
 	res.send({
-		api: 'Invalid url!'
+		message: 'Invalid url!'
 	});
 };
 
@@ -24,6 +24,11 @@ exports.getAllUsers = function(req,res) {
 				entities.push(entity);
 			}
 			res.send(entities);
+		} else {
+			console.log(err);
+			res.send({
+				'error': err
+			});
 		}
 	});
 };

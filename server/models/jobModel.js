@@ -37,7 +37,7 @@ module.exports = function() {
 
 	this.schema.statics.toEntity = function(rawModel) {
 		return {
-			'job_id': rawModel.job_id,
+			'job_id': rawModel._id,
 			'job_name': rawModel.job_name,
 			'job_description': rawModel.job_description,
 			'job_priority': rawModel.job_priority,

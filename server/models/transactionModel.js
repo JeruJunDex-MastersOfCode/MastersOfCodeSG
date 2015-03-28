@@ -49,7 +49,7 @@ module.exports = function() {
 
 	this.schema.statics.toEntity = function(rawModel) {
 		return {
-			'transaction_id': rawModel.transaction_id,
+			'transaction_id': rawModel._id,
 			'transaction_name': rawModel.transaction_name,
 			'transaction_description': rawModel.transaction_description,
 			'transaction_price': rawModel.transaction_price,
