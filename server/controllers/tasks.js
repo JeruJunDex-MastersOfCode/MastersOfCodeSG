@@ -12,7 +12,7 @@ exports.index = function(req, res) {
 	});
 };
 
-exports.getJobs = function(req, res) {
+exports.getAllTasks = function(req, res) {
 	var taskModel = models.taskModel;
 
 	taskModel.find({}, function(err, jobs) {
@@ -32,7 +32,7 @@ exports.getJobs = function(req, res) {
 	});
 };
 
-exports.getJob = function(req, res) {
+exports.getTask = function(req, res) {
 	var taskModel = models.taskModel;
 
 	taskModel.findOne({job_id: req.body.job_id}, function(err, job) {
@@ -52,39 +52,46 @@ exports.getJob = function(req, res) {
 	});
 };
 
-exports.addJob = function(req, res) {
+exports.addTask = function(req, res) {
 	var taskModel =  models.taskModel;
 
-	var mom_id = req.params.mom_id;
+	var uid = req.params.uid;
 
-	var tempJob = {};
-
-	if(req.body.job_name == null || req.body.job_name == undefined) {
+	if(req.body.taskName == null || req.body.taskName == undefined) {
 		res.send({
 			'error': 'Job name is required!'
 		});
 		return;
 	}
 
-	if(req.body.job_price == null || req.body.job_price == undefined) {
+	if(req.body.taskRate == null || req.body.taskRate == undefined) {
 		res.send({
 			'error': 'Job name is required!'
 		});
 		return;
 	}	
 
-	tempJob.job_name = req.body.job_name;
-	tempJob.job_description = req.body.job_description;
-	tempJob.job_price = req.body.job_price;
-	tempJob.job_priority = req.body.job_priority;
-	tempJob.mom_id = mom_body.mom_id;
-
-	taskModel.find({}, function(err, jobs) {
+	taskModel.find({},function (err, task) {
 		if(!err) {
-			if(jobs) {
-				jobs.save(function(err) {
+			if(task) {
+				var task = new taskModel({					
+					taskName: req.body.taskName,
+					taskDescription: req.body.taskDescription,
+					taskRate: req.body.taskRate,
+					taskPriority: req.body.taskPriority,
+					taskOwner: req.body.taskOwner,
+					taskAssignee: req.body.taskAssignee,
+					taskStatus: req.body.taskStatus,
+					taskComments: {
+				        messageFrom : req.body.messageFrom,
+				        message : req.body.message
+				    }
+				});
+
+
+				task.save(function(err) {
 					if(!err) {
-						var entity = taskModel.toEntity(tempJob);
+						var entity = taskModel.toEntity(task);
 						res.send(entity);
 					} else {
 						res.send({
@@ -105,7 +112,7 @@ exports.addJob = function(req, res) {
 
 };
 
-exports.editJob = function(req, res){
+exports.editTask = function(req, res){
 	var taskModel = models.taskModel;
 
 	var job_id = req.params.job_id;
