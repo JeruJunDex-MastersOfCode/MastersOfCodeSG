@@ -1,14 +1,84 @@
 var models = require('../models/index');
 var config = require('../config');
-var querystring = require('querystring');
 var async = require('async');
 var mongoose = require('mongoose');
-var __ = require('underscore');
-var Q = require('q');
 
 exports.index = function(req, res) {
 	res.send({
 		message: 'Invalid url!'
+	});
+};
+
+exports.getSimplifyCustomer = function(req, res) {
+	var Simplify = require("simplify-commerce"),
+	    client = Simplify.getClient({
+	        publicKey: config.simplifyCommerce.public_key,
+	        privateKey: config.simplifyCommerce.private_key
+	    });
+	var userModel = models.userModel;
+
+	userModel.findOne({uEmail: req.body.email}, function(err, user) {
+		if(!err) {
+			if(user) {
+				client.customer.create({
+				    email: user.uEmail,
+				    name: user.uFirstName + ' ' + user.uLastName,
+				    card: {
+				       expMonth: req.body.expMonth,
+				       expYear: req.body.expYear,
+				       cvc: req.body.cvc,
+				       number: req.body.number
+				    }
+				}, function(errData, data){
+				 
+				    if(errData){
+				        console.error("Error Message: " + errData.data.error.message);
+				        // handle the error
+				        return;
+				    }
+				    user.u_MCustomerId = data.card.customer.id
+
+				    user.save(function (err) {
+						if (!err) {
+							var entity = userModel.toEntity(user);
+							res.send(entity);
+						} else {
+							console.log(err);
+							res.send({
+								'error': err
+							});
+						}
+					});
+				});
+			} else {
+				res.send({});
+			}
+		} else {
+			res.send({
+				'Error': err
+			});
+		}
+	});
+};
+
+exports.testPayment = function(req, res) {
+	var Simplify = require("simplify-commerce"),
+	    client = Simplify.getClient({
+	        publicKey: config.simplifyCommerce.public_key,
+	        privateKey: config.simplifyCommerce.private_key
+	    });	
+	console.log(tempObj);
+	client.payment.create({
+		customer: tempObj.customerId,
+		amount : "2500",
+		currency : "USD"
+	}, function(errData, data) {
+		if(errData) {
+			console.error(errData.data.error.message);
+			return;
+		}
+		console.log(data);
+		res.send(data);
 	});
 };
 
@@ -58,44 +128,52 @@ exports.getUser = function(req, res) {
 exports.signup = function(req,res) {
 	var userModel = models.userModel;
 
-	/*if (!req.body.user_firstname || !req.body.user_lastname || !req.body.user_address || !req.body.user_contactNo || !req.body.user_email || !req.body.user_city) {
-		res.send({
-			'error': "One or more required fields are missing"
-		});
-		return;
-	}*/
-	/*TODO: session check*/
+	var tempCustomerObj = {};
+
+	tempCustomerObj.firstName = 
+	tempCustomerObj.middleName =
+	tempCustomerObj.lastName = req.body.uLastName;
+	tempCustomerObj.email = req.body.uEmail;
+	tempCustomerObj.address = req.body.uAddress;
+	tempCustomerObj.contactNo = req.body.uContactNo;
+	tempCustomerObj.city = req.body.uCity;
+	tempCustomerObj.photo = req.body.uPhoto;
+	tempCustomerObj.utype = req.body.uType;
+	tempCustomerObj.vaCardNumber = req.body.vaCardNumber;
+
+	console.log(tempCustomerObj);
 
 	userModel.find({},function (err, user) {
 		if (!err) {
 			if (user) {
-					var user = new userModel({					
-						user_firstName: req.body.user_firstName,
-						user_lastName: req.body.user_lastName,
-						user_address: req.body.user_address,
-						user_contactNo: req.body.user_contactNo,
-						user_email: req.body.user_email,
-						user_city: req.body.user_city,
-						user_photo: req.body.user_photo,
-						user_type: req.body.user_type,
-						user_middleName: req.body.user_middleName
-					});
+				var user = new userModel({
+					uFirstName: req.body.uFirstName,
+					uMiddleName:  req.body.uMiddleName,
+					uLastName: req.body.uLastName,
+					uEmail: req.body.uEmail,
+					uAddress: req.body.uAddress,
+					uContactNo: req.body.uContactNo,
+					uCity: req.body.uCity,
+					uPhoto: req.body.uPhoto,
+					uType: req.body.uType,
+					u_VACardNumber: req.body.vaCardNumber
+				});
 
-					user.save(function (err) {
-						if (!err) {
-							var entity = userModel.toEntity(user);
-							res.send(entity);
-						} else {
-							console.log(err);
-							res.send({
-								'error': err
-							});
-						}
-					});
+				user.save(function (err) {
+					if (!err) {
+						var entity = userModel.toEntity(user);
+						res.send(entity);
+					} else {
+						console.log(err);
+						res.send({
+							'error': err
+						});
+					}
+				});
 			} else {
 				res.send({
-					'error': 'User already exists!'
-				})
+					'Error': 'User already exists!'
+				});
 			}
 		} else {
 			console.log(err);
@@ -104,6 +182,8 @@ exports.signup = function(req,res) {
 			});
 		}
 	});
+
+	
 };
 
 exports.login = function(req, res) {

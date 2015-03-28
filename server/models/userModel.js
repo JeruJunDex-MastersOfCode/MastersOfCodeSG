@@ -6,52 +6,61 @@ module.exports = function () {
 	this.collection = 'users';
 
 	this.schema = mongoose.Schema({
-		user_firstName: {
+		uFirstName: {
 			type: String
 		},		
-		user_lastName: {
+		uMiddleName: {
 			type: String
 		},
-		user_address: {
+		uLastName: {
 			type: String
 		},
-		user_contactNo: {
+		uEmail: {
 			type: String
 		},
-		user_email: {
+		uAddress: {
 			type: String
 		},
-		user_city: {
+		uContactNo: {
 			type: String
 		},
-		user_photo: {
+		uCity: {
 			type: String
 		},
-		user_type: {
+		uPhoto: {
 			type: String
 		},
-		user_middleName: {
+		uType: {
+			type: String
+		},
+		u_MCustomerId: {
+			type: String
+		},
+		u_VACardNumber : {
 			type: String
 		}
 	});
 
 	this.schema.statics.toEntity = function(rawModel) {
 		return {
-			'user_id': rawModel._id,
-			'user_firstName': rawModel.user_firstName,
-			'user_lastName': rawModel.user_lastName,
-			'user_address': rawModel.user_address,
-			'user_contactNo': rawModel.user_contactNo,
-			'user_email': rawModel.user_email,
-			'user_city': rawModel.user_city,
-			'user_photo': rawModel.user_photo,
-			'user_type': rawModel.user_type,
-			'user_middleName': rawModel.user_middleName
+			'uId': rawModel._id,
+			'uFirstName': rawModel.uFirstName,
+			'uMiddleName': rawModel.uMiddleName,
+			'uLastName': rawModel.uLastName,
+			'uEmail': rawModel.uEmail,
+			'uAddress': rawModel.uAddress,
+			'uContactNo': rawModel.uContactNo,
+			'uCity': rawModel.uCity,
+			'uPhoto': rawModel.uPhoto,
+			'uType': rawModel.uType,
+			'u_MCustomerId': rawModel.u_MCustomerId,
+			'u_VACardNumber': rawModel.u_VACardNumber
+
 		};
 	};
 
 	this.schema.index({
-		user_email: 1
+		uEmail: 1
 	});
 	
 	this.schema.set('autoIndex', false);
