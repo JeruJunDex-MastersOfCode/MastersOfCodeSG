@@ -26,46 +26,47 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   .state('app', {
     url: "/app",
     abstract: true,
-    templateUrl: "templates/menu.html",
-    controller: 'AppCtrl'
+    templateUrl: "templates/menu.html"
   })
 
-  .state('app.search', {
-    url: "/search",
+  .state('app.profile', {
+    url: "/profile",
     views: {
       'menuContent': {
-        templateUrl: "templates/search.html"
+        templateUrl: "templates/profile.html"
       }
     }
   })
 
-  .state('app.browse', {
-    url: "/browse",
+  .state('app.settings', {
+    url: "/settings",
     views: {
       'menuContent': {
-        templateUrl: "templates/browse.html"
+        templateUrl: "templates/settings.html"
       }
     }
   })
-    .state('app.playlists', {
-      url: "/playlists",
-      views: {
-        'menuContent': {
-          templateUrl: "templates/playlists.html",
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
 
-  .state('app.single', {
-    url: "/playlists/:playlistId",
+  .state('app.tasks', {
+    url: "/tasks",
     views: {
       'menuContent': {
-        templateUrl: "templates/playlist.html",
-        controller: 'PlaylistCtrl'
+        templateUrl: "templates/tasks.html",
+        controller: 'TasksCtrl'
+      }
+    }
+  })
+
+  .state('app.task', {
+    url: "/task",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/task.html"
+        //controller: 'TasksCtrl'
       }
     }
   });
+
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/settings');
 });

@@ -1,28 +1,29 @@
 angular.module('starter.services', [])
 
-.factory('authService', function($http){
+.factory('authService', ['user', function($http, user){
 
 	var service = {};
 
-	// func authenticate(id, password)
-	// func onAuthSuccess(user)
-	// func logout?
+	service.authenticate = function(credentials) {
+		$http.get('data/user.json?id=' + new Date().getTime())
+		.then(function(response) {
+			user.init(response.data);
+		});
+	}
 
-	// other handlers for auth errors
-	// ^ skip for now though
-	
-	// init(); if needed
 	return service;
-})
+}])
 
-.factory('userService', function($http){
+.factory('tasks', function($http){
 
-	// init (invoked by authService) set user display details
-	// setup allowed actions depending on user type
-	// then redirect to task list screen
-})
+	var service = {};
 
-.factory('tasksService', function($http){
+	service.getAll = function(userid){
+		$http.get('data/tasks.json?id=' + new Date().getTime())
+		.then(function(response) {
+			// user.init(response.data);
+		});
+	}
 
 	// get all - include user id to get only relevant to current user
 	// ^on receipt, publish event so listening controllers can pickup
@@ -35,4 +36,36 @@ angular.module('starter.services', [])
 
 	// requestConfirmation - VA done, pending approval from mom
 	// confirmCompletion - mom finally confirms to close task
+
+	return service;
 });
+
+.factory('user', function($http){
+
+	var service = {},
+		_isAuthenticated = false,
+		_user = {
+			name: "John Doe",
+			abilities: {
+				CAN_ADD: false,
+				CAN_EDIT: false,
+				CAN_DELETE: false
+			}
+		};
+
+	function init(user) {
+		_isAuthenticated = false;
+	}
+
+	// init (invoked by authService) set user display details
+	// setup allowed actions depending on user type
+	// then redirect to task list screen
+
+	service.isAuthenticated = function(){
+		return _isAuthenticated;
+	}
+
+	return service;
+})
+
+
