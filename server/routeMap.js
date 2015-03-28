@@ -1,6 +1,5 @@
 module.exports = [
-	['/api', 'index#index', 'get'],
-	['/auth/login', 'auth#login', 'get']
+	['/api', 'index#index', 'get']
 	/*['/auth/signup_mom', 'auth#signupMom', 'post'],
 	['/api/users/moms/signup', 'users#addMom', 'post'],
 	['/api/users', 'users#index', 'get'],
