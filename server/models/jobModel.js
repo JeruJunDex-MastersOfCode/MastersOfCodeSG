@@ -5,7 +5,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 module.exports = function() {
 	this.collection = 'jobs';
 
-	this.schema = mongoose.schema({
+	this.schema = mongoose.Schema({
 		job_id: {
 			type: String	
 		},
