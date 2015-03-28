@@ -1,1 +1,13 @@
 /* Empty. Add your own CSS if you like */
+
+/* Global */
+h2 { font-size: 24px !important; }
+a { text-decoration: none; }
+
+/* Tasks */
+.item { border-color: #fff; } 
+.card-list { margin-bottom: 0; margin-top: 5px; }
+.item-text-wrap > p{ margin-top:15px; }
+.item-bottom { margin-top: 20px; }
+.item-edit { float:right; margin-bottom: 20px; }
+.chatbubbles { padding-right: 3px;  }
