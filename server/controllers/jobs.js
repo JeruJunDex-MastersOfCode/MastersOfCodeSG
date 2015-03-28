@@ -1,6 +1,5 @@
 var models = require('../models/index');
 var config = require('../config');
-var request = require('request');
 var querystring = require('querystring');
 var async = require('async');
 var mongoose = require('mongoose');
