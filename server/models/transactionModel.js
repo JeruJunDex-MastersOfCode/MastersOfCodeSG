@@ -5,7 +5,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 module.exports = function() {
 	this.collection = 'transaction';
 
-	this.schema = mongoose.schema({
+	this.schema = mongoose.Schema({
 		transaction_id: {
 			type: String	
 		},
@@ -25,7 +25,7 @@ module.exports = function() {
 			type: String,
 			required: true
 		},
-		transaction_status {
+		transaction_status: {
 			type: String,
 			required: true
 		},
