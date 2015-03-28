@@ -11,15 +11,19 @@ module.exports = function() {
 		},
 		job_name: {
 			type: String,
-			required: true,
+			required: true
 		},
 		job_description: {
 			type: String,
 			required: true
 		},
+		Job_priority: {
+			type: String,
+			required: true
+		},
 		job_price: {
 			type: String,
-			required: true,
+			required: true
 		},
 		mom_id: {
 			type: String,
@@ -36,6 +40,7 @@ module.exports = function() {
 			'job_id': rawModel.job_id,
 			'job_name': rawModel.job_name,
 			'job_description': rawModel.job_description,
+			'job_priority': rawModel.job_priority,
 			'job_price': rawModel.job_price,
 			'mom_id': rawModel.mom_id,
 			'mom_email': rawModel.mom_email
