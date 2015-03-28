@@ -50,12 +50,15 @@ module.exports = function() {
 			'taskOwner': rawModel.taskOwner,
 			'taskAssignee': rawModel.taskAssignee,
 			'taskStatus': rawModel.taskStatus,
-			'taskComments': rawModel.taskComments
+			'taskComments': {
+		        "messageFrom" : rawModel.taskOwner,
+		        "message" : rawModel.taskAssignee
+		    }
 		};
 	};
 
 	this.schema.index({
-		mom_email: 1
+		uEmail: 1
 	});
 	
 	this.schema.set('autoIndex', false);
