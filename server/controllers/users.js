@@ -33,7 +33,26 @@ exports.getAllUsers = function(req,res) {
 };
 
 exports.getUser = function(req, res) {
+	var userModel = models.userModel;
+	var user_id = req.params.user_id;
 
+	userModel.findOne({
+		user_id: user_id
+	}, function (err, user) {
+		if (!err) {
+			if (user) {
+				var entity = userModel.toEntity(user);
+				res.send(entity);
+			} else {
+				res.send({});
+			}
+		} else {
+			console.log(err);
+			res.send({
+				'error': err
+			});
+		}
+	});
 };
 
 exports.signup = function(req,res) {
@@ -53,15 +72,16 @@ exports.signup = function(req,res) {
 					'error': 'User already exists in the database.'
 				});
 			} else {
-				var user = new userModel({
-					user_email: req.body.user_email,
-					user_firstname: req.body.user_firstname,
-					user_lastname: req.body.user_lastname,
+				var user = new userModel({					
+					user_firstName: req.body.user_firstName,
+					user_lastName: req.body.user_lastName,
 					user_address: req.body.user_address,
 					user_contactNo: req.body.user_contactNo,
+					user_email: req.body.user_email,
 					user_city: req.body.user_city,
 					user_photo: req.body.user_photo,
-					user_type: req.body.user_type
+					user_type: req.body.user_type,
+					user_middleName: req.body.user_middleName
 				});
 
 				user.save(function (err) {

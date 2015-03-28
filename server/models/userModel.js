@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
-var ObjectId = mongoose.Schema.Types.ObjectId;
 
 module.exports = function () {
 
@@ -8,44 +7,37 @@ module.exports = function () {
 
 	this.schema = mongoose.Schema({
 		user_firstName: {
-			type: String,
-			required: true
-		},
-		user_middleName: {
-			type: String,
-			required: true
-		},
+			type: String
+		},		
 		user_lastName: {
-			type: String,
-			required: true
+			type: String
 		},
 		user_address: {
-			type: String,
-			required: true
+			type: String
 		},
 		user_contactNo: {
-			type: String,
-			required: true
+			type: String
 		},
 		user_email: {
-			type: String,
-			required: true
+			type: String
 		},
 		user_city: {
-			type: String,
-			required: true
+			type: String
 		},
 		user_photo: {
 			type: String
 		},
 		user_type: {
 			type: String
+		},
+		user_middleName: {
+			type: String
 		}
 	});
 
 	this.schema.statics.toEntity = function(rawModel) {
 		return {
-			'user_id': rawModel.user_id,
+			'user_id': rawModel._id,
 			'user_firstName': rawModel.user_firstName,
 			'user_lastName': rawModel.user_lastName,
 			'user_address': rawModel.user_address,
@@ -53,7 +45,8 @@ module.exports = function () {
 			'user_email': rawModel.user_email,
 			'user_city': rawModel.user_city,
 			'user_photo': rawModel.user_photo,
-			'user_type': rawModel.user_type
+			'user_type': rawModel.user_type,
+			'user_middleName': rawModel.user_middleName
 		};
 	};
 
