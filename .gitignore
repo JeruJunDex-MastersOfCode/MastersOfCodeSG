@@ -1,1 +1,5 @@
 *.rar
+client/www/Gruntfile.js
+client/www/package.json
+client/www/.sass-cache/
+client/www/jade/
