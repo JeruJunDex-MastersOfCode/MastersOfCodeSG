@@ -4,57 +4,61 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 module.exports = function () {
 
-	this.collection = 'usersVa';
+	this.collection = 'users';
 
 	this.schema = mongoose.Schema({
-		va_firstName: {
+		user_firstName: {
 			type: String,
 			required: true
 		},
-		va_middleName: {
+		user_middleName: {
 			type: String,
 			required: true,
 		},
-		va_lastName: {
+		user_lastName: {
 			type: String,
 			required: true
 		},
-		va_address: {
+		user_address: {
 			type: String,
 			required: true
 		},
-		va_contactNo: {
+		user_contactNo: {
 			type: String,
 			required: true
 		},
-		va_email: {
+		user_email: {
 			type: String,
 			required: true
 		},
-		va_city: {
+		user_city: {
 			type: String,
 			required: true
 		},
-		va_photo: {
+		user_photo: {
+			type: String
+		},
+		user_type: {
 			type: String
 		}
 	});
 
 	this.schema.statics.toEntity = function(rawModel) {
 		return {
-			'va_id': rawModel.va_id,
-			'va_firstName': rawModel.va_firstName,
-			'va_lastName': rawModel.va_lastName,
-			'va_address': rawModel.va_address,
-			'va_contactNo': rawModel.va_contactNo,
-			'va_email': rawModel.va_email,
-			'va_city': rawModel.va_city,
-			'va_photo': rawModel.va_photo
+			'user_id': rawModel.user_id,
+			'user_firstName': rawModel.user_firstName,
+			'user_lastName': rawModel.user_lastName,
+			'user_address': rawModel.user_address,
+			'user_contactNo': rawModel.user_contactNo,
+			'user_email': rawModel.user_email,
+			'user_city': rawModel.user_city,
+			'user_photo': rawModel.user_photo,
+			'user_type': rawModel.user_type
 		};
 	};
 
 	this.schema.index({
-		va_email: 1
+		user_email: 1
 	});
 	
 	this.schema.set('autoIndex', false);
