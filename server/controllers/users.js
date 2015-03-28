@@ -65,7 +65,7 @@ exports.testPayment = function(req, res) {
 	});
 };
 
-exports.getAllUsers = function(req,res) {
+exports.getAllUsers = function(req, res) {
 	var userModel = models.userModel;
 
 	userModel.find({}, function(err, users) {
@@ -87,10 +87,9 @@ exports.getAllUsers = function(req,res) {
 
 exports.getUser = function(req, res) {
 	var userModel = models.userModel;
-	var user_id = req.params.user_id;
 
 	userModel.findOne({
-		user_id: user_id
+		_id: req.params.uid
 	}, function (err, user) {
 		if (!err) {
 			if (user) {
@@ -123,15 +122,16 @@ exports.signup = function(req,res) {
 		if (!err) {
 			if (user) {
 					var user = new userModel({					
-						user_firstName: req.body.user_firstName,
-						user_lastName: req.body.user_lastName,
-						user_address: req.body.user_address,
-						user_contactNo: req.body.user_contactNo,
-						user_email: req.body.user_email,
-						user_city: req.body.user_city,
-						user_photo: req.body.user_photo,
-						user_type: req.body.user_type,
-						user_middleName: req.body.user_middleName
+						ufirstName: req.body.ufirstName,
+						umiddleName: req.body.umiddleName,
+						ulastName: req.body.ulastName,
+						uEmail: req.body.uEmail,
+						uAddress: req.body.uAddress,
+						uContactNo: req.body.uContactNo,
+						uCity: req.body.uCity,
+						uPhoto: req.body.uPhoto,
+						uType: req.body.uType
+						
 					});
 
 					user.save(function (err) {
@@ -164,7 +164,44 @@ exports.login = function(req, res) {
 };
 
 exports.editProfile = function(req, res){
+	var userModel = models.userModel;
 
+	userModel.findOne({
+		_id: req.params.uid
+	}, function (err, user) {
+		if (!err) {				
+				if (user) {
+					user.ufirstName = req.body.ufirstName;
+					user.umiddleName = req.body.umiddleName;
+					user.ulastName = req.body.ulastName;
+					user.uEmail = req.body.uEmail;
+					user.uAddress = req.body.uAddress;
+					user.uContactNo = req.body.uContactNo;
+					user.uCity = req.body.uCity;
+					user.uPhoto = req.body.uPhoto;
+					user.uType = req.body.uType
+
+					user.save(function (err) {
+					if (!err) {
+						var entity = userModel.toEntity(user);
+						res.send(entity);
+					} else {
+						console.log(err);
+						res.send({
+							'error': err
+						});
+					}
+				});
+			} else {
+				res.send({});
+			}
+		} else {
+			console.log(err);
+			res.send({
+				'Error': err
+			});
+		}
+	});
 };
 
 exports.addPhoto = function(req, res) {
