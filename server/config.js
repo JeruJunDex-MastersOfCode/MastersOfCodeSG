@@ -4,9 +4,9 @@ module.exports = {
 		name: 'mastersofcode'
 	},
 	simplifyCommerce: {
-		api_key: '',
-		api_secret: ''
-	},
+		public_key: 'sbpb_ZmRlMTc4NGItYTNkMC00Zjk3LWI5YWEtYjNlZDgxMzVkOTMx',
+		private_secret: 'u3Vn1hljQBY8gl5Tf0mXalbXo++SFHvQbPR5SAZoK6N5YFFQL0ODSXAOkNtXTToq'
+	},	
 	moneySend: {
 
 	},
@@ -14,6 +14,4 @@ module.exports = {
 		cookieSecret: '',
 		name: '',
 	}
-}
-
-mongodb:///mastersofcode
+};

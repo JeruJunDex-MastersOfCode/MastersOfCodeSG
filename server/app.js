@@ -4,11 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var expressPath = require('express-path');
+var config = require('./config');
+var mongoose = require('mongoose');
 
 var app = express();
+
+mongoose.connect('mongodb://' + config.db.server + '/' + config.db.name);
+
+var port = process.env.PORT || 3000;
+
+var io = require('socket.io').listen(app.listen(port));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,17 +27,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
 
+    if (req.method == 'OPTIONS') {
+        res.send(200);
+    } else {
+        next();
+    }
+});
+
+expressPath(app, 'routeMap');
+/*
 app.use('/', routes);
-app.use('/users', users);
+app.use('/users', users);*/
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-
 // error handlers
 
 // development error handler
@@ -55,6 +73,6 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
-
+*/
+console.log('Node server is listening on port ' + port);
 module.exports = app;
