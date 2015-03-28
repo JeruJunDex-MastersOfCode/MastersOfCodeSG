@@ -42,7 +42,7 @@ module.exports = function() {
 
 	this.schema.statics.toEntity = function(rawModel) {
 		return {
-			'taskid': rawModel._id,
+			'taskId': rawModel._id,
 			'taskName': rawModel.taskName,
 			'taskDescription': rawModel.taskDescription,
 			'taskPriority': rawModel.taskPriority,
