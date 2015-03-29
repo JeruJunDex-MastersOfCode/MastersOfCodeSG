@@ -24,17 +24,30 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('TaskCtrl', ['$scope', 'userService', function($scope, userService, $stateParams){
+.controller('TaskCtrl', ['$scope', 'userService', '$http', function($scope, userService, $http){
 
 	console.log($stateParams);
 
 	$scope.CRUD_ALLOWED = false;
-	$scope.ACCEPT_ALLOWED = false;
-	$scope.CAN_PROGRESS_ALLOWED = false;
+	$scope.ACCEPT_ALLOWED = true;
+	$scope.CAN_PROGRESS_ALLOWED = true;
 	$scope.CAN_CONFIRM_ALLOWED = false;
+	$scope.TRANSACTION_COMPLETED = false;
 
-	var userType = userService.getUser().type;
-	if (userType == 1) {
+	$scope.acceptTask = function(){
+		$scope.ACCEPT_ALLOWED = false;
+		$scope.CAN_PROGRESS_ALLOWED = false;
+	}
+
+	$scope.processCompletion = function(){
+		$scope.CAN_PROGRESS_ALLOWED = true;
+
+		$http.get('/api/transactions/testRoute').then(function(response){
+			// just for demo purposes
+			$scope.TRANSACTION_COMPLETED = true;
+		});
+
 
 	}
+
 }]);

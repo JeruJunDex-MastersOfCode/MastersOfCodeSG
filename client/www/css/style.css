@@ -37,6 +37,7 @@ a { text-decoration: none; }
 .tasks .item .title { padding: 30px; position: relative;}
 .tasks .item p { font-size: 14px; background-color: #FAFAFA; padding: 30px; }
 .task-list .list > .item {  }
+.task .completion { background-color: #FF4081; color: white; font-size: 14px; text-align: center; padding: 20px; font-weight: bold }
 
 .menu.menu-left .list > .item { border: none; }
 .menu.menu-left .list > .item:first-child { padding-top: 60px; }
@@ -48,6 +49,7 @@ a { text-decoration: none; }
 .comment { background-color: #E7E7E7; padding: 20px; margin: 20px; }
 .comment p { font-size: 12px; line-height: 1.3em; color: #757575; }
 .comment .date { font-size: 10px; font-weight: bold; text-transform: uppercase; }
+
 
 
 .btn-circle { 
@@ -67,6 +69,17 @@ a { text-decoration: none; }
 .btn-circle i { color: white; font-size: 0.3em; vertical-align: middle; display: table-cell; }
 
 .settings h3 { padding: 60px; }
+
+.task button.button { 
+	position: fixed; bottom: 0; z-index: 999; 
+	left: 50%; transform: translate(-50%, 0);
+	margin: 0 auto; background-color: #FF4081; color: white;
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+	box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+	font-size: 14px;
+}
+
 
 /* Nav */
 .menu-icon { font-size: 30px; margin-right: 10px; }
