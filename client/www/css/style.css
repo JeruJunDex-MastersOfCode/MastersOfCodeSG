@@ -10,4 +10,15 @@ a { text-decoration: none; }
 .item-text-wrap > p{ margin-top:15px; }
 .item-bottom { margin-top: 20px; }
 .item-edit { float:right; margin-bottom: 20px; }
-.chatbubbles { padding-right: 3px;  }
+.item-bottom > a { margin-right: 13px; font-size: 20px; }
+.item-bottom > span { float:right; }
+.item-price-right { float:right; }
+.item-action { padding-top: 30px; }
+.item-action > span { font-size: 26px;float:right; margin-left:10px; }
+.item-VA {   margin-left: 15px; padding-bottom: 0;margin-bottom: 0;font-weight: bold; }
+.card, .list-inset { margin-top:5px; }
+.item-comment-log {   margin-left: 10px; font-size: 12px;margin-top: -15px; }
+.item-avatar > a { font-size:14px; }
+
+/* Nav */
+.menu-icon { font-size: 30px; margin-right: 10px; }
