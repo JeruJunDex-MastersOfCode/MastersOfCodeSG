@@ -60,25 +60,33 @@ exports.getSimplifyCustomer = function(req, res) {
 		}
 	});
 };
-
+var tempObj = {};
 exports.testPayment = function(req, res) {
 	var Simplify = require("simplify-commerce"),
 	    client = Simplify.getClient({
 	        publicKey: config.simplifyCommerce.public_key,
 	        privateKey: config.simplifyCommerce.private_key
 	    });	
-	console.log(tempObj);
-	client.payment.create({
-		customer: tempObj.customerId,
-		amount : "2500",
-		currency : "USD"
-	}, function(errData, data) {
-		if(errData) {
-			console.error(errData.data.error.message);
-			return;
+
+	var userModel = models.userModel;
+
+	userModel.findOne({uId: req.params.uId}, function(err, user) {
+		if(!err) {
+			if(user) {
+				client.payment.create({
+					customer: user.u_MCustomerId,
+					amount : "2500",
+					currency : "USD"
+				}, function(errData, data) {
+					if(errData) {
+						console.error(errData.data.error.message);
+						return;
+					}
+					console.log(data);
+					res.send(data);
+				});
+			}
 		}
-		console.log(data);
-		res.send(data);
 	});
 };
 
@@ -127,21 +135,6 @@ exports.getUser = function(req, res) {
 
 exports.signup = function(req,res) {
 	var userModel = models.userModel;
-
-	var tempCustomerObj = {};
-
-	tempCustomerObj.firstName = 
-	tempCustomerObj.middleName =
-	tempCustomerObj.lastName = req.body.uLastName;
-	tempCustomerObj.email = req.body.uEmail;
-	tempCustomerObj.address = req.body.uAddress;
-	tempCustomerObj.contactNo = req.body.uContactNo;
-	tempCustomerObj.city = req.body.uCity;
-	tempCustomerObj.photo = req.body.uPhoto;
-	tempCustomerObj.utype = req.body.uType;
-	tempCustomerObj.vaCardNumber = req.body.vaCardNumber;
-
-	console.log(tempCustomerObj);
 
 	userModel.find({},function (err, user) {
 		if (!err) {

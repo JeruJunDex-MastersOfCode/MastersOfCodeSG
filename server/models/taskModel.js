@@ -50,10 +50,7 @@ module.exports = function() {
 			'taskOwner': rawModel.taskOwner,
 			'taskAssignee': rawModel.taskAssignee,
 			'taskStatus': rawModel.taskStatus,
-			'taskComments': {
-		        "messageFrom" : rawModel.taskOwner,
-		        "message" : rawModel.taskAssignee
-		    }
+			'taskComments': rawModel.taskComments
 		};
 	};
 
