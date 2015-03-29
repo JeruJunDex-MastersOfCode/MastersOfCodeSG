@@ -3,7 +3,7 @@
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="task in tasks">
-        <div class="card card-list">
+        <div class="card card-list" ng-click="viewTask(task)">
 		  <div class="item item-text-wrap">
 		   	<h2 class="positive">{{ task.title }}</h2>
 		   	<p>{{ task.description }}</p>

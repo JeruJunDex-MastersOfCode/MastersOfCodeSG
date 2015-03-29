@@ -9,6 +9,17 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('AuthCtrl', ['$scope', function($scope){
-	
+.controller('TasksCtrl', ['$scope', 'taskService', '$rootScope', '$state', function($scope, taskService, $rootScope, $state){
+
+	$scope.tasks = [];
+
+	taskService.getTasks("7865");
+	$rootScope.$on('tasks_received', function(){
+		$scope.tasks = taskService.tasks();
+	});
+
+	$scope.viewTask = function(task){
+		$state.go('app.task');
+	}
+
 }]);

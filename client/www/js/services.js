@@ -25,4 +25,25 @@ angular.module('starter.services', [])
 	};
 
 	return factory;
+}])
+
+.factory('taskService', ['$http', '$rootScope', function($http, $rootScope){
+
+	var factory = {};
+
+	var _tasks = [];
+
+	factory.getTasks = function(id){
+		$http.get('data/tasks.json?id=' + new Date().getTime()).then(function(response) {
+			_tasks = response.data.tasks;
+			$rootScope.$broadcast('tasks_received', null);
+		});
+	}
+
+	factory.tasks = function(){ return _tasks; }
+
+
+
+	return factory;
+
 }]);
