@@ -70,10 +70,11 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers'])
   
 
   .state('app.task', {
-    url: "/task",
+    url: "/task?id",
     views: {
       'menuContent': {
-        templateUrl: "templates/task.html"
+        templateUrl: "templates/task.html",
+        controller: 'TaskCtrl'
       }
     }
   });

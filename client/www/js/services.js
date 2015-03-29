@@ -24,6 +24,10 @@ angular.module('starter.services', [])
 		$state.go('app.tasks');
 	};
 
+	factory.getUser = function(){
+		return _user;
+	};
+
 	return factory;
 }])
 

@@ -19,7 +19,22 @@ angular.module('starter.controllers', [])
 	});
 
 	$scope.viewTask = function(task){
-		$state.go('app.task');
+		$state.go('app.task', {id:3});
 	}
 
+}])
+
+.controller('TaskCtrl', ['$scope', 'userService', function($scope, userService, $stateParams){
+
+	console.log($stateParams);
+
+	$scope.CRUD_ALLOWED = false;
+	$scope.ACCEPT_ALLOWED = false;
+	$scope.CAN_PROGRESS_ALLOWED = false;
+	$scope.CAN_CONFIRM_ALLOWED = false;
+
+	var userType = userService.getUser().type;
+	if (userType == 1) {
+
+	}
 }]);
