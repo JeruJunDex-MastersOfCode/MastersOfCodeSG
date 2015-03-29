@@ -2,7 +2,7 @@
 <TransferRequest>
    <LocalDate>0612</LocalDate>
    <LocalTime>161222</LocalTime>
-   <TransactionReference>5213200221010311221</TransactionReference>
+   <TransactionReference>5213200226612264821</TransactionReference>
    <SenderName>John Doe</SenderName>
    <SenderAddress>
       <Line1>123 Main Street</Line1>
@@ -13,14 +13,14 @@
       <Country>USA</Country>
    </SenderAddress>
    <FundingCard>
-      <AccountNumber>5184680430000279</AccountNumber>
+      <AccountNumber>5184680430000261</AccountNumber>
       <ExpiryMonth>11</ExpiryMonth>
       <ExpiryYear>2016</ExpiryYear>
    </FundingCard>
 
    <FundingMasterCardAssignedId>123456</FundingMasterCardAssignedId>
    <FundingAmount>
-      <Value>1111</Value>
+      <Value>121</Value>
       <Currency>840</Currency>
    </FundingAmount>
    <ReceiverName>Jose Lopez</ReceiverName>
@@ -34,7 +34,7 @@
    </ReceiverAddress>
    <ReceiverPhone>1800639426</ReceiverPhone>
    <ReceivingCard>
-      <AccountNumber>5184680430000261</AccountNumber>
+      <AccountNumber>5184680430000279</AccountNumber>
    </ReceivingCard>
    <ReceivingAmount>
       <Value>1866</Value>

@@ -178,8 +178,8 @@ exports.testRoute = function(req, res) {
 				});
 			}
 		], function(err, results) {
-			console.log(results[1]);
-			res.send(results[0]);
+			console.log(results[0]);
+			res.send(results[1]);
 	});
 }
 
