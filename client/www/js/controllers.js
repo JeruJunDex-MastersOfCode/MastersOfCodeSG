@@ -1,9 +1,14 @@
 angular.module('starter.controllers', [])
 
-.controller('TasksCtrl', function($scope){
-    $scope.tasks = [
-    { title: "Task Title", description: "Lorem ipsum dolor sit amet adispisicing elit. Consectitur emat." },
-    { title: "Task Title", description: "Lorem ipsum dolor sit amet adispisicing elit. Consectitur emat." },
-    { title: "Task Title", description: "Lorem ipsum dolor sit amet adispisicing elit. Consectitur emat." }
-    ];
-})
+.controller('AuthCtrl', ['$scope', 'authService', '$scope', function($scope, authService, $rootScope){
+
+	$scope.loginDetails = {};
+	$scope.doLogin = function(loginDetails){
+		authService.authUser(loginDetails);
+	}
+
+}])
+
+.controller('AuthCtrl', ['$scope', function($scope){
+	
+}]);

@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.services', 'starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -29,6 +29,26 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     templateUrl: "templates/menu.html"
   })
 
+  .state('app.login', {
+    url: "/login",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/login.html",
+        controller: 'AuthCtrl'
+      }
+    }
+  }) 
+
+  .state('app.tasks', {
+    url: "/tasks",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/tasks.html",
+        controller: 'TasksCtrl'
+      }
+    }
+  })
+
   .state('app.profile', {
     url: "/profile",
     views: {
@@ -47,22 +67,13 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   })
 
-  .state('app.tasks', {
-    url: "/tasks",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/tasks.html",
-        controller: 'TasksCtrl'
-      }
-    }
-  })
+  
 
   .state('app.task', {
     url: "/task",
     views: {
       'menuContent': {
         templateUrl: "templates/task.html"
-        //controller: 'TasksCtrl'
       }
     }
   });
