@@ -1,9 +1,15 @@
-
 <ion-view view-title="Login">
   <ion-content>
-    <h1>Login</h1>
-    <input type="text" ng-model="loginDetails.username"/>
-    <input type="password" ng-model="loginDetails.password"/>
-    <button ng-click="doLogin(loginDetails)" class="button button-positive">LOGIN</button>
+    <div class="list list-inset">
+    	<div class="login-form">
+		  <label class="item item-input">
+		    <input type="text" placeholder="First Name" ng-model="loginDetails.username" />
+		  </label>
+		  <label class="item item-input">
+		    <input type="password" placeholder="Last Name" ng-model="loginDetails.password" />
+		  </label>
+		   <button ng-click="doLogin(loginDetails)" class="button button-positive login-button">SUBMIT</button>
+		</div>
+	</div>
   </ion-content>
-</ion-view>
+</ion-view> 
