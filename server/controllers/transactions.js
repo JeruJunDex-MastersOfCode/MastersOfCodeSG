@@ -4,8 +4,6 @@ var async = require('async');
 var mongoose = require('mongoose');
 var parser = require('xml2json');
 var request = require('request');
-var http = require('http');
-var fs = require('fs');
 
 exports.index = function(req, res) {
 	res.send({
@@ -13,7 +11,77 @@ exports.index = function(req, res) {
 	});
 };
 
-exports.startTransaction = function(req, res) {
+exports.getAllTransactions = function(req, res) {
+	var transactionModel = models.transactionModel;
+
+	transactionModel.find({}, function(err, transactions) {
+		if(!err){
+			var entities = [];
+			for (var i in transactions) {
+				var entity = userModel.toEntity(transactions[i]);
+				entities.push(entity);
+			}
+			res.send(entities);
+		} else {
+			console.log(err);
+			res.send({
+				'error': err
+			});
+		}
+	})
+};
+
+exports.getTransacation = function(req, res) {
+	var userModel = models.userModel,
+		taskModel = models.taskModel,
+		transactionModel = models.transactionModel;
+
+	var taskId = req.params.taskId;
+
+	userModel.findOne({taskId: taskId}, function(err, transaction) {
+		if(!err) {
+			if(transaction) {
+				var entity = transactionModel.toEntity(taskId);
+				res.send(entity);
+			} else {
+				res.send({});
+			}
+		} else {
+			res.send({
+				'Error': err
+			});
+		}
+	});
+};
+
+exports.newTransaction = function(req, res) {
+	var userModel = models.userModel,
+		taskModel = models.taskModel,
+		transactionModel = models.transactionModel;
+
+	var taskId = req.params.taskId;
+
+	taskModel.findOne({taskId: taskId}, function(err, task) {
+		transactionModel.find({taskId: taskId}, function(error, transaction) {
+			if(!error) {
+				if(transaction) {
+					transaction.transStatus  = 'Started';
+					transaction.taskId = 'taskId';
+					transaction.transFixedRate = 100;
+
+					transaction.save(function(errdata) {
+						if(!errdata) {
+							var entity = transactionModel.toEntity(entity);
+							res.send(entity);
+						}
+					})
+				}
+			}
+		});
+	});
+};
+
+exports.updateTransaction = function(req, res) {
 
 };
 
@@ -61,92 +129,32 @@ exports.checkout = function(req, res) {
 	}
 
 	function moneySend(callback) {
-		var xmlTemplate = require('request.xml');
+		var xmlPath = "request.xml";
 
-		var chars =  {
-		    '<': '&lt;',
-		    '>': '&gt;',
-		    '(': '&#40;',
-		    ')': '&#41;',
-		    '#': '&#35;',
-		    '&': '&amp;',
-		    '"': '&quot;',
-		    "'": '&apos;'
-		};
-
-		var options = {
-		    object: false,
-		    reversible: true,
-		    coerce: true,
-		    sanitize: true,
-		    trim: true,
-		    arrayNotation: false
-		};
-	}
-};
-
-exports.test = function(req, res) {
-	/*var chars =  {
-	    '<': '&lt;',
-	    '>': '&gt;',
-	    '(': '&#40;',
-	    ')': '&#41;',
-	    '#': '&#35;',
-	    '&': '&amp;',
-	    '"': '&quot;',
-	    "'": '&apos;'
-	};
-
-	var options = {
-	    object: false,
-	    reversible: true,
-	    coerce: true,
-	    sanitize: true,
-	    trim: true,
-	    arrayNotation: false
-	};
-
-	var xmlFile = 'request.xml';
-
-	var jsonObj = parser.toJson(xmlFile);
-	console.log(jsonObj);
-	res.send(jsonObj);*/
-
-	/*var returnJSONResults = function(baseName, queryName) {
-		var XMLPath = "request.xml";
-		var rawJSON = loadXMLDoc(XMLPath);
-		function loadXMLDoc(filePath) {
-		var fs = require('fs');
-		var xml2js = require('xml2js');
-		var json;
-		try {
-		    var fileData = fs.readFileSync(filePath, 'ascii');
-
-		    var parser = new xml2js.Parser();
-		    parser.parseString(fileData.substring(0, fileData.length), function (err, result) {
-		    json = JSON.stringify(result);
-		    console.log(result);
+		request({
+			url: 'http://dmartin.org:8028/moneysend/v2/transfer?Format=XML',
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/xml'
+			},
+			body: xmlPath
+		}, function(error, response, body) {
+			console.log(response);
+			callback(response);
 		});
+	}
 
-		console.log("File '" + filePath + "/ was successfully read.\n");
-		return json;
-		} catch (ex) {console.log(ex)}
-		}
-		}();*/
-	var xmlPath = "request2.xml";
+	async.parallel([
+		async.apply(simplifyPayment),
+		async.apply(moneySend)
+		], function(err, results) {
+			var s = results[0];
+			var m = results[1];
 
-	request({
-		url: 'http://dmartin.org:8028/moneysend/v2/transfer?Format=XML',
-		method: 'post',
-		headers: {
-			'Content-Type': 'application/xml'
-		},
-		body: xmlPath
-	}, function(error, response, body) {
-		console.log(response);
-		res.send(body);
+			console.log('s > ' + s);
+			res.send(m);
 	});
-}
+};
 
 exports.endTransaction = function(req, res) {
 

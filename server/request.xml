@@ -2,7 +2,7 @@
 <TransferRequest>
    <LocalDate>0612</LocalDate>
    <LocalTime>161222</LocalTime>
-   <TransactionReference>5213200221010364221</TransactionReference>
+   <TransactionReference>5213200221010311221</TransactionReference>
    <SenderName>John Doe</SenderName>
    <SenderAddress>
       <Line1>123 Main Street</Line1>
@@ -20,7 +20,7 @@
 
    <FundingMasterCardAssignedId>123456</FundingMasterCardAssignedId>
    <FundingAmount>
-      <Value>121</Value>
+      <Value>1111</Value>
       <Currency>840</Currency>
    </FundingAmount>
    <ReceiverName>Jose Lopez</ReceiverName>
